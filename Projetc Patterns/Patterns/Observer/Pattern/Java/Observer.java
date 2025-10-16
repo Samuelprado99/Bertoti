@@ -1,4 +1,3 @@
-public interface Observer{
-    public void atualizar(double temperatura, double umidade, double pressao);
-}
+public interface Observer {
+    void update(String productName);
 }
