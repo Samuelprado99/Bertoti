@@ -1,0 +1,53 @@
+classDiagram
+    direction LR
+
+    package Model {
+        class DataModel {
+            -int value
+            +setValue(int)
+        }
+        class Subject {
+            +attach(Observer)
+            +notifyObservers(int)
+        }
+        DataModel --|> Subject
+    }
+
+    package View {
+        class UIComponent {
+            <>
+            +draw()
+            +click()
+            +update(int)
+        }
+        class Label { +draw() +update(int) }
+        class Button { +draw() +click() }
+        class Panel { +add(UIComponent) +draw() +update(int) }
+        
+        UIComponent --|> Observer
+        UIComponent <|-- Label
+        UIComponent <|-- Button
+        UIComponent <|-- Panel
+        Panel o-- "0..*" UIComponent
+    }
+    
+    package Controller {
+        class ActionStrategy {
+            <>
+            +execute(DataModel)
+        }
+        class IncrementStrategy { +execute(DataModel) }
+        class DecrementStrategy { +execute(DataModel) }
+        
+        ActionStrategy <|.. IncrementStrategy
+        ActionStrategy <|.. DecrementStrategy
+    }
+    
+    class Observer { <> +update(int) }
+
+    Subject o-- Observer
+    Button o-- ActionStrategy
+    Button ..> DataModel : manipulates
+    Main ..> DataModel
+    Main ..> Panel
+    Main ..> Button
